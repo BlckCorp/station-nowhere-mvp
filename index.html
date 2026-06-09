@@ -5,14 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Станция Нигде — MVP</title>
   <meta name="description" content="Браузерный roguelike MVP про дрезину, память маршрута и постапокалиптическую железную дорогу." />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
-  <div class="noise"></div>
+  <div class="scene-bg" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
 
   <main class="shell">
-    <section class="hero">
+    <header class="topbar">
+      <div class="brand-mark">SN</div>
       <div>
+        <b>STATION NOWHERE</b>
+        <span>post-rail roguelike prototype</span>
+      </div>
+      <div class="topbar-status"><span class="dot"></span> частота жива</div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
         <p class="eyebrow">browser roguelike · post-rail survival</p>
         <h1>Станция <span>Нигде</span></h1>
         <p class="lead">
@@ -21,14 +32,18 @@
         </p>
       </div>
       <div class="signal">
-        <span class="dot"></span>
-        <b>радио:</b> “Мы здесь. Не приезжайте.”
+        <div class="signal-title"><span class="dot"></span><b>радиоэфир / 03:17</b></div>
+        <p>“Мы здесь. Не приезжайте.”</p>
+        <small>сигнал повторяется три раза и пропадает в шуме</small>
       </div>
     </section>
 
     <section class="game-layout">
       <aside class="panel stats-panel">
-        <h2>Экспедиция</h2>
+        <div class="panel-title">
+          <p class="eyebrow">run status</p>
+          <h2>Экспедиция</h2>
+        </div>
         <div class="stat"><span>Здоровье</span><b id="hp">—</b></div>
         <div class="stat"><span>Топливо</span><b id="fuel">—</b></div>
         <div class="stat"><span>Патроны</span><b id="ammo">—</b></div>
@@ -38,8 +53,8 @@
 
         <div class="controls">
           <button id="newRunBtn">Новый забег</button>
-          <button id="restBtn">Отдых</button>
-          <button id="memoryBtn">Память</button>
+          <button id="restBtn">Отдых на станции</button>
+          <button id="memoryBtn">Память маршрута</button>
         </div>
 
         <div class="hint">
@@ -49,6 +64,13 @@
       </aside>
 
       <section class="board-wrap">
+        <div class="map-header">
+          <div>
+            <p class="eyebrow">procedural rail map</p>
+            <h2>Перегон к станции</h2>
+          </div>
+          <div class="objective">Цель: добраться до <b>Нигде</b></div>
+        </div>
         <div id="board" class="board" aria-label="Карта забега"></div>
         <div class="legend">
           <span><i class="tile player"></i> обходчик</span>
@@ -61,7 +83,10 @@
       </section>
 
       <aside class="panel log-panel">
-        <h2>Журнал</h2>
+        <div class="panel-title">
+          <p class="eyebrow">black box</p>
+          <h2>Журнал</h2>
+        </div>
         <div id="log" class="log"></div>
       </aside>
     </section>
@@ -85,7 +110,10 @@
     </section>
 
     <section class="lore-block">
-      <h2>Завязка</h2>
+      <div>
+        <p class="eyebrow">world bible</p>
+        <h2>Завязка</h2>
+      </div>
       <p>
         После Зимы Связи страна не закончилась — она продолжила гнить по расписанию.
         Железная дорога стала последней нитью между выжившими. Однажды на мёртвой
@@ -95,6 +123,6 @@
     </section>
   </main>
 
-  <script src="game.js"></script>
+  <script src="game.js?v=2"></script>
 </body>
 </html>
