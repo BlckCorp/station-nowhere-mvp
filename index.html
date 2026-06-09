@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Станция Нигде — MVP</title>
   <meta name="description" content="Браузерный roguelike MVP про дрезину, память маршрута и постапокалиптическую железную дорогу." />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="mobile.css?v=1" />
 </head>
 <body>
   <div class="scene-bg" aria-hidden="true"></div>
@@ -59,7 +60,7 @@
 
         <div class="hint">
           <b>Управление:</b> WASD / стрелки — ход, Space / Enter — действие,
-          R — отдых, M — память, N — новый забег.
+          R — отдых, M — память, N — новый забег. На телефоне используй экранные кнопки снизу.
         </div>
       </aside>
 
@@ -89,6 +90,22 @@
         </div>
         <div id="log" class="log"></div>
       </aside>
+    </section>
+
+    <section class="touch-controls" aria-label="Сенсорное управление">
+      <div class="touch-pad" aria-label="Движение">
+        <button type="button" class="touch-btn touch-up" data-touch-action="up" aria-label="Вверх">▲</button>
+        <button type="button" class="touch-btn touch-left" data-touch-action="left" aria-label="Влево">◀</button>
+        <button type="button" class="touch-btn touch-center" data-touch-action="interact" aria-label="Действие">●</button>
+        <button type="button" class="touch-btn touch-right" data-touch-action="right" aria-label="Вправо">▶</button>
+        <button type="button" class="touch-btn touch-down" data-touch-action="down" aria-label="Вниз">▼</button>
+      </div>
+      <div class="touch-actions" aria-label="Быстрые действия">
+        <button type="button" class="touch-chip" data-touch-action="interact">Действие</button>
+        <button type="button" class="touch-chip" data-touch-action="rest">Отдых</button>
+        <button type="button" class="touch-chip" data-touch-action="memory">Память</button>
+        <button type="button" class="touch-chip danger" data-touch-action="newrun">Новый</button>
+      </div>
     </section>
 
     <section id="memoryDrawer" class="memory-drawer hidden">
@@ -124,5 +141,6 @@
   </main>
 
   <script src="game.js?v=2"></script>
+  <script src="mobile.js?v=1"></script>
 </body>
 </html>
