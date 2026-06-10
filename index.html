@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Станция Нигде — MVP</title>
-  <meta name="description" content="Браузерный roguelike MVP про дрезину, память маршрута и постапокалиптическую железную дорогу." />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <title>Станция Здесь — MVP</title>
+  <meta name="description" content="Мрачный Stardew-like MVP о восстановлении станции после Зимы Связи." />
+  <link rel="stylesheet" href="styles.css?v=4" />
   <link rel="stylesheet" href="mobile.css?v=1" />
 </head>
 <body>
@@ -15,81 +15,111 @@
 
   <main class="shell">
     <header class="topbar">
-      <div class="brand-mark">SN</div>
+      <div class="brand-mark">SH</div>
       <div>
-        <b>STATION NOWHERE</b>
-        <span>post-rail roguelike prototype</span>
+        <b>STATION HERE</b>
+        <span>уютно-мрачный post-rail life sim</span>
       </div>
-      <div class="topbar-status"><span class="dot"></span> частота жива</div>
+      <button id="helpBtn" class="ghost small-btn">Как играть</button>
     </header>
 
-    <section class="hero">
+    <section class="hero station-hero">
       <div class="hero-copy">
-        <p class="eyebrow">browser roguelike · post-rail survival</p>
-        <h1>Станция <span>Нигде</span></h1>
+        <p class="eyebrow">build here · resist nowhere</p>
+        <h1>Станция <span>Здесь</span></h1>
         <p class="lead">
-          Веди дрезину через мёртвые перегоны после Зимы Связи.
-          Карта меняется каждый забег, но рельсы помнят тебя.
+          Восстанавливай заброшенную станцию, выращивай еду в вагонах,
+          принимай выживших и держись за место, пока радио зовёт тебя на Нигде.
         </p>
       </div>
-      <div class="signal">
-        <div class="signal-title"><span class="dot"></span><b>радиоэфир / 03:17</b></div>
-        <p>“Мы здесь. Не приезжайте.”</p>
-        <small>сигнал повторяется три раза и пропадает в шуме</small>
+      <div class="signal card">
+        <div class="signal-title"><span class="dot"></span><b>ночной эфир</b></div>
+        <p>“Не строй Здесь слишком крепко.”</p>
+        <small>дорога хочет, чтобы ты уехал</small>
       </div>
     </section>
 
-    <section class="game-layout">
-      <aside class="panel stats-panel">
-        <div class="panel-title">
-          <p class="eyebrow">run status</p>
-          <h2>Экспедиция</h2>
+    <section class="hud-grid">
+      <article class="panel status-panel">
+        <p class="eyebrow">calendar</p>
+        <h2>День <b id="day">1</b> · <span id="phase">Утро</span></h2>
+        <div class="meters">
+          <div class="meter"><span>Силы</span><b id="stamina">8</b></div>
+          <div class="meter"><span>Надежда</span><b id="hope">42</b></div>
+          <div class="meter danger"><span>Угроза</span><b id="threat">8</b></div>
         </div>
-        <div class="stat"><span>Здоровье</span><b id="hp">—</b></div>
-        <div class="stat"><span>Топливо</span><b id="fuel">—</b></div>
-        <div class="stat"><span>Патроны</span><b id="ammo">—</b></div>
-        <div class="stat"><span>Усталость</span><b id="fatigue">—</b></div>
-        <div class="stat"><span>Шум</span><b id="noiseLevel">—</b></div>
-        <div class="stat"><span>День пути</span><b id="day">—</b></div>
+      </article>
 
+      <article class="panel resources-panel">
+        <p class="eyebrow">storage</p>
+        <h2>Запасы</h2>
+        <div class="resources">
+          <span>Еда <b id="res-food">0</b></span>
+          <span>Вода <b id="res-water">0</b></span>
+          <span>Топливо <b id="res-fuel">0</b></span>
+          <span>Металл <b id="res-metal">0</b></span>
+          <span>Дерево <b id="res-wood">0</b></span>
+          <span>Лекарства <b id="res-meds">0</b></span>
+          <span>Семена <b id="res-seeds">0</b></span>
+          <span>Овощи <b id="res-crop">0</b></span>
+          <span>Патроны <b id="res-ammo">0</b></span>
+        </div>
+      </article>
+    </section>
+
+    <section class="game-layout station-layout">
+      <aside class="panel context-panel">
+        <p class="eyebrow">current place</p>
+        <h2 id="place-name">Платформа</h2>
+        <p id="place-desc" class="place-desc"></p>
         <div class="controls">
-          <button id="newRunBtn">Новый забег</button>
-          <button id="restBtn">Отдых на станции</button>
-          <button id="memoryBtn">Память маршрута</button>
+          <button id="main-action">Действие</button>
+          <button id="restBtn">Отдохнуть у печки</button>
+          <button id="memoryBtn">Память станции</button>
+          <button id="newRunBtn" class="danger-btn">Новая станция</button>
         </div>
-
         <div class="hint">
-          <b>Управление:</b> WASD / стрелки — ход, Space / Enter — действие,
-          R — отдых, M — память, N — новый забег. На телефоне используй экранные кнопки снизу.
+          WASD / стрелки — движение по станции. Enter / Space — действие.
+          На телефоне используй экранный D-pad снизу.
         </div>
       </aside>
 
-      <section class="board-wrap">
+      <section class="board-wrap station-wrap">
         <div class="map-header">
           <div>
-            <p class="eyebrow">procedural rail map</p>
-            <h2>Перегон к станции</h2>
+            <p class="eyebrow">station map</p>
+            <h2>Твоя станция</h2>
           </div>
-          <div class="objective">Цель: добраться до <b>Нигде</b></div>
+          <div class="objective">Построй <b>Здесь</b>, пока зовёт <b>Нигде</b></div>
         </div>
-        <div id="board" class="board" aria-label="Карта забега"></div>
+        <div id="station-map" class="station-map" aria-label="Карта станции"></div>
         <div class="legend">
-          <span><i class="tile player"></i> обходчик</span>
-          <span><i class="tile goal"></i> Нигде</span>
-          <span><i class="tile station"></i> станция</span>
-          <span><i class="tile cache"></i> тайник</span>
+          <span><i class="tile player"></i> ты</span>
+          <span><i class="tile garden"></i> грядки</span>
+          <span><i class="tile workshop"></i> ремонт</span>
           <span><i class="tile radio"></i> радио</span>
-          <span><i class="tile danger"></i> опасность</span>
+          <span><i class="tile gate"></i> выезд</span>
         </div>
       </section>
 
       <aside class="panel log-panel">
-        <div class="panel-title">
-          <p class="eyebrow">black box</p>
-          <h2>Журнал</h2>
-        </div>
+        <p class="eyebrow">black box</p>
+        <h2>Журнал станции</h2>
         <div id="log" class="log"></div>
       </aside>
+    </section>
+
+    <section class="lower-grid">
+      <article class="panel">
+        <p class="eyebrow">buildings</p>
+        <h2>Постройки</h2>
+        <div id="buildings" class="upgrades"></div>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">people</p>
+        <h2>Жители</h2>
+        <div id="npcs" class="npc-list"></div>
+      </article>
     </section>
 
     <section class="touch-controls" aria-label="Сенсорное управление">
@@ -104,7 +134,7 @@
         <button type="button" class="touch-chip" data-touch-action="interact">Действие</button>
         <button type="button" class="touch-chip" data-touch-action="rest">Отдых</button>
         <button type="button" class="touch-chip" data-touch-action="memory">Память</button>
-        <button type="button" class="touch-chip danger" data-touch-action="newrun">Новый</button>
+        <button type="button" class="touch-chip danger" data-touch-action="newrun">Новая</button>
       </div>
     </section>
 
@@ -112,35 +142,33 @@
       <div class="drawer-card">
         <div class="drawer-head">
           <div>
-            <p class="eyebrow">мета-прогрессия</p>
-            <h2>Память маршрута</h2>
+            <p class="eyebrow">meta memory</p>
+            <h2>Память станции</h2>
           </div>
           <button id="closeMemoryBtn" class="ghost">Закрыть</button>
         </div>
-        <p>
-          После смерти часть опыта остаётся в памяти. Эти фрагменты дают подсказки,
-          меняют события и иногда врут.
-        </p>
-        <div id="memoryList" class="memory-list"></div>
-        <button id="wipeMemoryBtn" class="danger-btn">Стереть память браузера</button>
+        <p>Станция запоминает не только успехи, но и предупреждения. Часть памяти может быть ложной.</p>
+        <div id="memory-list" class="memory-list"></div>
       </div>
     </section>
 
-    <section class="lore-block">
-      <div>
-        <p class="eyebrow">world bible</p>
-        <h2>Завязка</h2>
+    <section id="helpDrawer" class="memory-drawer hidden">
+      <div class="drawer-card">
+        <div class="drawer-head">
+          <div>
+            <p class="eyebrow">guide</p>
+            <h2>Как играть</h2>
+          </div>
+          <button id="closeHelpBtn" class="ghost">Закрыть</button>
+        </div>
+        <p><b>Цель MVP:</b> пережить первые дни, восстановить станцию и не дать угрозе сломать надежду.</p>
+        <p>Каждое действие двигает время: утро → день → вечер → ночь. Ночью станция потребляет еду и воду, грядки растут, а дорога присылает события.</p>
+        <p>Кликай по клетке или ходи клавишами. Нажимай “Действие”, чтобы работать с выбранным местом.</p>
       </div>
-      <p>
-        После Зимы Связи страна не закончилась — она продолжила гнить по расписанию.
-        Железная дорога стала последней нитью между выжившими. Однажды на мёртвой
-        частоте герой слышит сигнал со станции, которой нет на картах.
-      </p>
-      <a href="LORE.md">Читать полный лор →</a>
     </section>
   </main>
 
-  <script src="game.js?v=2"></script>
+  <script src="game.js?v=4"></script>
   <script src="mobile.js?v=1"></script>
 </body>
 </html>
