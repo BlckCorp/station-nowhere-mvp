@@ -1,3 +1,35 @@
+.top-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.toast {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  top: 18px;
+  max-width: min(620px, calc(100% - 32px));
+  padding: 12px 16px;
+  border: 1px solid rgba(119,240,172,.25);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(32,44,28,.96), rgba(9,12,8,.96));
+  color: var(--text);
+  box-shadow: 0 18px 60px rgba(0,0,0,.48), 0 0 28px rgba(119,240,172,.12);
+  opacity: 0;
+  transform: translate(-50%, -18px);
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+  font-size: 14px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
 .toolbelt {
   display: grid;
   grid-template-columns: repeat(6, minmax(72px, 1fr));
@@ -23,9 +55,7 @@
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.22)), #17180f;
 }
 
-.toolbelt button:hover {
-  transform: translateY(-2px);
-}
+.toolbelt button:hover { transform: translateY(-2px); }
 
 .toolbelt button.active {
   border-color: rgba(119,240,172,.9);
@@ -62,9 +92,7 @@
   letter-spacing: -.02em;
 }
 
-.toolbelt button.active b {
-  color: var(--accent-2);
-}
+.toolbelt button.active b { color: var(--accent-2); }
 
 .current-tool {
   margin: 10px 0 0;
@@ -76,9 +104,34 @@
   font-size: 13px;
 }
 
-.world-frame {
-  isolation: isolate;
+.side-mini {
+  margin-top: 18px;
+  display: grid;
+  gap: 10px;
 }
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.mini-grid span,
+.quest-preview p {
+  margin: 0;
+  padding: 8px 9px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  background: rgba(0,0,0,.18);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.mini-grid b { color: var(--accent); }
+.quest-preview { display: grid; gap: 7px; }
+.quest-preview p.ready { color: var(--accent-2); border-color: rgba(119,240,172,.22); }
+
+.world-frame { isolation: isolate; }
 
 .phase-overlay {
   position: absolute;
@@ -111,69 +164,62 @@
   box-shadow: inset 0 0 110px rgba(0,0,0,.78), inset 0 0 28px rgba(92,142,255,.12);
 }
 
-.phase-night .station-cell {
-  filter: brightness(.62) saturate(.82);
+.phase-night .station-cell { filter: brightness(.62) saturate(.82); }
+.phase-evening .station-cell { filter: sepia(.13) brightness(.92) saturate(1.05); }
+.phase-morning .station-cell { filter: brightness(1.04) saturate(.95); }
+.weather-fog .world-frame::before,
+.weather-snow .world-frame::before,
+.weather-rain .world-frame::before,
+.weather-radio .world-frame::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  z-index: 9;
+  pointer-events: none;
+  border-radius: 18px;
 }
 
-.phase-evening .station-cell {
-  filter: sepia(.13) brightness(.92) saturate(1.05);
+.weather-fog .world-frame::before {
+  background: radial-gradient(circle at 40% 40%, rgba(220,230,210,.18), transparent 40%), linear-gradient(90deg, rgba(200,210,190,.08), transparent, rgba(200,210,190,.12));
+  backdrop-filter: blur(1px);
 }
 
-.phase-morning .station-cell {
-  filter: brightness(1.04) saturate(.95);
+.weather-snow .world-frame::before {
+  background-image: radial-gradient(circle, rgba(255,255,255,.45) 0 1px, transparent 2px);
+  background-size: 18px 18px;
+  animation: snow-drift 1.8s linear infinite;
 }
 
-.hero-sprite.walk {
-  animation: hero-bob .17s steps(2, end) infinite;
+.weather-rain .world-frame::before {
+  background: repeating-linear-gradient(105deg, rgba(150,200,255,.18) 0 1px, transparent 1px 12px);
+  animation: rain-fall .55s linear infinite;
 }
 
-.hero-sprite.walk::after {
-  animation: feet-step .17s steps(2, end) infinite;
+.weather-radio .world-frame::before {
+  background: repeating-linear-gradient(0deg, rgba(119,240,172,.08) 0 2px, transparent 2px 7px);
+  mix-blend-mode: screen;
+  animation: radio-static .22s steps(2,end) infinite;
 }
 
-@keyframes hero-bob {
-  0% { translate: 0 0; }
-  50% { translate: 0 -2px; }
-  100% { translate: 0 0; }
-}
+@keyframes snow-drift { to { background-position: 18px 36px; } }
+@keyframes rain-fall { to { background-position: -18px 40px; } }
+@keyframes radio-static { 50% { opacity: .3; transform: translateY(1px); } }
 
+.hero-sprite.walk { animation: hero-bob .17s steps(2, end) infinite; }
+.hero-sprite.walk::after { animation: feet-step .17s steps(2, end) infinite; }
+
+@keyframes hero-bob { 0% { translate: 0 0; } 50% { translate: 0 -2px; } 100% { translate: 0 0; } }
 @keyframes feet-step {
   0% { background: linear-gradient(90deg, #0d0d0c 0 34%, transparent 34% 60%, #0d0d0c 60%); }
   100% { background: linear-gradient(90deg, #0d0d0c 0 40%, transparent 40% 66%, #0d0d0c 66%); }
 }
 
-.station-cell.player::before {
-  animation: selection-pulse 1.2s ease-in-out infinite;
-}
-
-@keyframes selection-pulse {
-  0%,100% { box-shadow: inset 0 0 0 0 rgba(119,240,172,.08); }
-  50% { box-shadow: inset 0 0 0 999px rgba(119,240,172,.05); }
-}
-
-.station-cell.garden .tile-art {
-  animation: crop-sway 1.4s ease-in-out infinite;
-}
-
-@keyframes crop-sway {
-  0%,100% { transform: translateX(0); }
-  50% { transform: translateX(1px); }
-}
-
-.station-cell.radio .tile-art,
-.station-cell.radio::after {
-  animation: radio-glow 1.6s ease-in-out infinite;
-}
-
-@keyframes radio-glow {
-  0%,100% { opacity: .72; filter: drop-shadow(0 0 0 rgba(113,214,255,0)); }
-  50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(113,214,255,.55)); }
-}
-
-.station-cell.home::before,
-.station-cell.dorm::before {
-  box-shadow: inset 0 -7px 0 rgba(0,0,0,.18), 0 -3px 12px rgba(255,196,92,.08);
-}
+.station-cell.player::before { animation: selection-pulse 1.2s ease-in-out infinite; }
+@keyframes selection-pulse { 0%,100% { box-shadow: inset 0 0 0 0 rgba(119,240,172,.08); } 50% { box-shadow: inset 0 0 0 999px rgba(119,240,172,.05); } }
+.station-cell.garden .tile-art { animation: crop-sway 1.4s ease-in-out infinite; }
+@keyframes crop-sway { 0%,100% { transform: translateX(0); } 50% { transform: translateX(1px); } }
+.station-cell.radio .tile-art, .station-cell.radio::after { animation: radio-glow 1.6s ease-in-out infinite; }
+@keyframes radio-glow { 0%,100% { opacity: .72; filter: drop-shadow(0 0 0 rgba(113,214,255,0)); } 50% { opacity: 1; filter: drop-shadow(0 0 8px rgba(113,214,255,.55)); } }
 
 .phase-night .station-cell.home::before,
 .phase-night .station-cell.dorm::before,
@@ -181,31 +227,122 @@
   box-shadow: inset 0 -7px 0 rgba(0,0,0,.18), 0 0 16px rgba(255,196,92,.2);
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(10px);
+}
+
+.game-modal {
+  width: min(920px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid rgba(224,173,71,.26);
+  border-radius: 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,.05), transparent 34%), rgba(18,22,14,.98);
+  box-shadow: 0 30px 100px rgba(0,0,0,.64), inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+.modal-body { margin-top: 18px; }
+.modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.muted { color: var(--muted); }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.craft-card,
+.quest-card,
+.route-card,
+.event-card,
+.inv-slot {
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 18px;
+  background: rgba(0,0,0,.22);
+}
+
+.craft-card h3,
+.quest-card h3,
+.route-card h3 { margin: 0 0 8px; }
+.craft-card p,
+.quest-card p,
+.route-card p,
+.event-card p { color: var(--muted); line-height: 1.45; }
+.craft-card small,
+.quest-card small,
+.route-card small { display: block; color: var(--faint); margin-top: 6px; }
+.craft-card button,
+.quest-card button,
+.route-card button { margin-top: 12px; width: 100%; }
+button:disabled { opacity: .42; cursor: not-allowed; transform: none !important; }
+.quest-card.ready { border-color: rgba(119,240,172,.34); box-shadow: inset 0 0 0 1px rgba(119,240,172,.1); }
+.quest-card.done { opacity: .72; }
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.inv-slot {
+  min-height: 108px;
+  display: grid;
+  gap: 8px;
+}
+.inv-slot b { color: var(--text); }
+.inv-slot span { color: var(--accent); font-size: 24px; font-weight: 900; }
+.inv-slot button { padding: 9px 10px; }
+
+.dialogue {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.portrait {
+  width: 110px;
+  height: 110px;
+  display: grid;
+  place-items: center;
+  border: 2px solid color-mix(in srgb, var(--portrait), white 16%);
+  border-radius: 22px;
+  background: radial-gradient(circle at 32% 20%, color-mix(in srgb, var(--portrait), white 18%), rgba(0,0,0,.18)), #15170f;
+  color: #111;
+  font-size: 52px;
+  font-weight: 950;
+  text-shadow: 0 1px 0 rgba(255,255,255,.18);
+  box-shadow: 0 16px 50px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.12);
+}
+
 @media (max-width: 860px) {
-  .toolbelt {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .toolbelt button {
-    min-height: 58px;
-  }
-  .toolbelt b {
-    display: none;
-  }
+  .top-actions { width: 100%; margin-left: 0; }
+  .top-actions .small-btn { margin-left: 0; flex: 1; }
+  .toolbelt { grid-template-columns: repeat(3, 1fr); }
+  .toolbelt button { min-height: 58px; }
+  .toolbelt b { display: none; }
+  .cards, .inventory-grid { grid-template-columns: 1fr; }
+  .dialogue { grid-template-columns: 76px 1fr; }
+  .portrait { width: 76px; height: 76px; border-radius: 16px; font-size: 34px; }
 }
 
 @media (max-width: 520px) {
-  .toolbelt {
-    gap: 6px;
-    padding: 8px;
-  }
-  .toolbelt button {
-    min-height: 50px;
-    padding: 6px 4px;
-  }
-  .toolbelt span {
-    font-size: 18px;
-  }
-  .phase-overlay {
-    inset: 8px;
-  }
+  .toolbelt { gap: 6px; padding: 8px; }
+  .toolbelt button { min-height: 50px; padding: 6px 4px; }
+  .toolbelt span { font-size: 18px; }
+  .phase-overlay,
+  .weather-fog .world-frame::before,
+  .weather-snow .world-frame::before,
+  .weather-rain .world-frame::before,
+  .weather-radio .world-frame::before { inset: 8px; }
+  .game-modal { padding: 16px; border-radius: 20px; }
 }
