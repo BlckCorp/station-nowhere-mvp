@@ -6,6 +6,7 @@
   <title>Станция Здесь — 2D MVP</title>
   <meta name="description" content="2D top-down Stardew-like MVP о восстановлении станции после Зимы Связи." />
   <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="gamefeel.css?v=1" />
   <link rel="stylesheet" href="mobile.css?v=1" />
 </head>
 <body>
@@ -80,7 +81,7 @@
         </div>
         <div class="hint">
           WASD / стрелки — движение по 2D-карте. Enter / Space — действие на клетке.
-          На телефоне используй экранный D-pad снизу.
+          Инструменты выбираются клавишами 1–6 или на панели под картой.
         </div>
       </aside>
 
@@ -94,7 +95,17 @@
         </div>
         <div class="world-frame">
           <div id="station-map" class="station-map" aria-label="2D карта станции"></div>
+          <div class="phase-overlay" aria-hidden="true"></div>
         </div>
+        <section class="toolbelt" aria-label="Панель инструментов">
+          <button type="button" data-tool="hand"><kbd>1</kbd><span>✋</span><b>Рука</b></button>
+          <button type="button" data-tool="seed"><kbd>2</kbd><span>🌱</span><b>Семена</b></button>
+          <button type="button" data-tool="water"><kbd>3</kbd><span>💧</span><b>Лейка</b></button>
+          <button type="button" data-tool="hammer"><kbd>4</kbd><span>🔨</span><b>Молоток</b></button>
+          <button type="button" data-tool="crowbar"><kbd>5</kbd><span>⛏</span><b>Лом</b></button>
+          <button type="button" data-tool="radio"><kbd>6</kbd><span>📻</span><b>Радио</b></button>
+        </section>
+        <p id="current-tool" class="current-tool">✋ Рука: универсальное действие</p>
         <div class="legend">
           <span><i class="tile player"></i> ты</span>
           <span><i class="tile garden"></i> грядки</span>
@@ -165,12 +176,13 @@
         </div>
         <p><b>Цель MVP:</b> жить на станции, чинить её, выращивать еду и не дать дороге забрать людей обратно в Нигде.</p>
         <p>Двигайся по 2D-карте. Камера показывает только часть мира вокруг персонажа. На каждой клетке можно выполнить своё действие.</p>
+        <p>Выбирай инструменты: <b>1</b> рука, <b>2</b> семена, <b>3</b> лейка, <b>4</b> молоток, <b>5</b> лом, <b>6</b> радио.</p>
         <p>Каждое действие двигает время: утро → день → вечер → ночь. Ночью станция потребляет еду и воду, грядки растут, а дорога присылает события.</p>
       </div>
     </section>
   </main>
 
-  <script src="game.js?v=5"></script>
+  <script src="game.js?v=6"></script>
   <script src="mobile.js?v=1"></script>
 </body>
 </html>
