@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Станция Здесь — MVP</title>
-  <meta name="description" content="Мрачный Stardew-like MVP о восстановлении станции после Зимы Связи." />
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <title>Станция Здесь — 2D MVP</title>
+  <meta name="description" content="2D top-down Stardew-like MVP о восстановлении станции после Зимы Связи." />
+  <link rel="stylesheet" href="styles.css?v=5" />
   <link rel="stylesheet" href="mobile.css?v=1" />
 </head>
 <body>
@@ -18,7 +18,7 @@
       <div class="brand-mark">SH</div>
       <div>
         <b>STATION HERE</b>
-        <span>уютно-мрачный post-rail life sim</span>
+        <span>2D post-rail farm/life sim</span>
       </div>
       <button id="helpBtn" class="ghost small-btn">Как играть</button>
     </header>
@@ -28,8 +28,8 @@
         <p class="eyebrow">build here · resist nowhere</p>
         <h1>Станция <span>Здесь</span></h1>
         <p class="lead">
-          Восстанавливай заброшенную станцию, выращивай еду в вагонах,
-          принимай выживших и держись за место, пока радио зовёт тебя на Нигде.
+          Восстанавливай заброшенную станцию, выращивай еду в тепличных вагонах,
+          дружи с выжившими и держись за место, пока радио зовёт тебя на Нигде.
         </p>
       </div>
       <div class="signal card">
@@ -69,7 +69,7 @@
 
     <section class="game-layout station-layout">
       <aside class="panel context-panel">
-        <p class="eyebrow">current place</p>
+        <p class="eyebrow">current tile</p>
         <h2 id="place-name">Платформа</h2>
         <p id="place-desc" class="place-desc"></p>
         <div class="controls">
@@ -79,7 +79,7 @@
           <button id="newRunBtn" class="danger-btn">Новая станция</button>
         </div>
         <div class="hint">
-          WASD / стрелки — движение по станции. Enter / Space — действие.
+          WASD / стрелки — движение по 2D-карте. Enter / Space — действие на клетке.
           На телефоне используй экранный D-pad снизу.
         </div>
       </aside>
@@ -87,12 +87,14 @@
       <section class="board-wrap station-wrap">
         <div class="map-header">
           <div>
-            <p class="eyebrow">station map</p>
-            <h2>Твоя станция</h2>
+            <p class="eyebrow">top-down 2d camera</p>
+            <h2>Станция и окрестности</h2>
           </div>
-          <div class="objective">Построй <b>Здесь</b>, пока зовёт <b>Нигде</b></div>
+          <div id="camera-label" class="objective">камера следует за тобой</div>
         </div>
-        <div id="station-map" class="station-map" aria-label="Карта станции"></div>
+        <div class="world-frame">
+          <div id="station-map" class="station-map" aria-label="2D карта станции"></div>
+        </div>
         <div class="legend">
           <span><i class="tile player"></i> ты</span>
           <span><i class="tile garden"></i> грядки</span>
@@ -161,14 +163,14 @@
           </div>
           <button id="closeHelpBtn" class="ghost">Закрыть</button>
         </div>
-        <p><b>Цель MVP:</b> пережить первые дни, восстановить станцию и не дать угрозе сломать надежду.</p>
+        <p><b>Цель MVP:</b> жить на станции, чинить её, выращивать еду и не дать дороге забрать людей обратно в Нигде.</p>
+        <p>Двигайся по 2D-карте. Камера показывает только часть мира вокруг персонажа. На каждой клетке можно выполнить своё действие.</p>
         <p>Каждое действие двигает время: утро → день → вечер → ночь. Ночью станция потребляет еду и воду, грядки растут, а дорога присылает события.</p>
-        <p>Кликай по клетке или ходи клавишами. Нажимай “Действие”, чтобы работать с выбранным местом.</p>
       </div>
     </section>
   </main>
 
-  <script src="game.js?v=4"></script>
+  <script src="game.js?v=5"></script>
   <script src="mobile.js?v=1"></script>
 </body>
 </html>
